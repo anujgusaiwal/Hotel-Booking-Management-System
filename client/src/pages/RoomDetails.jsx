@@ -103,9 +103,16 @@ export default function RoomDetails() {
 
         {/* Room Details */}
         <div>
-          <h1 className="text-3xl font-bold mb-4 text-gray-800 dark:text-white">
-            {room.title}
-          </h1>
+          <div className="flex items-center justify-between mb-4">
+            <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
+              {room.title}
+            </h1>
+            {room.room_type && (
+              <span className="text-sm font-semibold bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 px-3 py-1 rounded-full capitalize">
+                {room.room_type}
+              </span>
+            )}
+          </div>
           <p className="text-gray-600 dark:text-gray-300 mb-6">
             {room.description}
           </p>
@@ -120,6 +127,12 @@ export default function RoomDetails() {
               </span>
             </div>
             <div className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+              {room.room_type && (
+                <div className="flex justify-between">
+                  <span>Room Type:</span>
+                  <span className="font-semibold capitalize">{room.room_type}</span>
+                </div>
+              )}
               <div className="flex justify-between">
                 <span>Capacity:</span>
                 <span className="font-semibold">{room.capacity} guests</span>

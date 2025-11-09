@@ -46,6 +46,25 @@ export default function Login() {
               create a new account
             </Link>
           </p>
+          <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-md border border-blue-200 dark:border-blue-800">
+            <p className="text-xs text-gray-600 dark:text-gray-400 mb-2 text-center">
+              Admin Login:
+            </p>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setFormData({
+                    email: 'admin@hotel.com',
+                    password: 'admin123'
+                  });
+                }}
+                className="flex-1 text-xs px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md transition-colors"
+              >
+                Fill Admin Credentials
+              </button>
+            </div>
+          </div>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg px-8 pt-6 pb-8">

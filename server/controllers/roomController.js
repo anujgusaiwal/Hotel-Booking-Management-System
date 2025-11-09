@@ -2,7 +2,7 @@ import pool from '../config/database.js';
 
 export const getRooms = async (req, res) => {
   try {
-    const { minPrice, maxPrice, capacity, status } = req.query;
+    const { minPrice, maxPrice, capacity, status, room_type } = req.query;
     
     let query = `
       SELECT r.*, 
@@ -32,16 +32,54 @@ export const getRooms = async (req, res) => {
       params.push(status);
     }
 
+    if (room_type) {
+      query += ' AND r.room_type = ?';
+      params.push(room_type);
+    }
+
     query += ' ORDER BY r.id DESC';
 
     const [rooms] = await pool.execute(query, params);
 
     // Parse JSON fields
-    const formattedRooms = rooms.map(room => ({
-      ...room,
-      features: JSON.parse(room.features || '{}'),
-      images: room.images ? JSON.parse(room.images) : []
-    }));
+    const formattedRooms = rooms.map(room => {
+      let features = {};
+      let images = [];
+      
+      // Handle features - check if it's already an object or a string
+      if (room.features) {
+        if (typeof room.features === 'string') {
+          try {
+            features = JSON.parse(room.features);
+          } catch (e) {
+            features = {};
+          }
+        } else {
+          features = room.features;
+        }
+      }
+      
+      // Handle images - check if it's already an array or a string
+      if (room.images) {
+        if (typeof room.images === 'string') {
+          try {
+            images = JSON.parse(room.images);
+          } catch (e) {
+            images = [];
+          }
+        } else if (Array.isArray(room.images)) {
+          images = room.images;
+        } else {
+          images = [];
+        }
+      }
+      
+      return {
+        ...room,
+        features,
+        images
+      };
+    });
 
     res.json(formattedRooms);
   } catch (error) {
@@ -66,8 +104,34 @@ export const getRoomById = async (req, res) => {
     }
 
     const room = rooms[0];
-    room.features = JSON.parse(room.features || '{}');
-    room.images = room.images ? JSON.parse(room.images) : [];
+    
+    // Handle features - check if it's already an object or a string
+    if (room.features) {
+      if (typeof room.features === 'string') {
+        try {
+          room.features = JSON.parse(room.features);
+        } catch (e) {
+          room.features = {};
+        }
+      }
+    } else {
+      room.features = {};
+    }
+    
+    // Handle images - check if it's already an array or a string
+    if (room.images) {
+      if (typeof room.images === 'string') {
+        try {
+          room.images = JSON.parse(room.images);
+        } catch (e) {
+          room.images = [];
+        }
+      } else if (!Array.isArray(room.images)) {
+        room.images = [];
+      }
+    } else {
+      room.images = [];
+    }
 
     res.json(room);
   } catch (error) {
@@ -78,11 +142,11 @@ export const getRoomById = async (req, res) => {
 
 export const createRoom = async (req, res) => {
   try {
-    const { title, description, capacity, price_per_night, features, status, images } = req.body;
+    const { title, description, capacity, price_per_night, features, status, images, room_type } = req.body;
 
     const [result] = await pool.execute(
-      'INSERT INTO rooms (title, description, capacity, price_per_night, features, status) VALUES (?, ?, ?, ?, ?, ?)',
-      [title, description, capacity, price_per_night, JSON.stringify(features || {}), status || 'available']
+      'INSERT INTO rooms (title, description, capacity, price_per_night, features, status, room_type) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      [title, description, capacity, price_per_night, JSON.stringify(features || {}), status || 'available', room_type || 'standard']
     );
 
     // Add images if provided
@@ -101,9 +165,39 @@ export const createRoom = async (req, res) => {
       [result.insertId]
     );
 
+    if (newRoom.length === 0) {
+      return res.status(500).json({ message: 'Failed to retrieve created room' });
+    }
+
     const room = newRoom[0];
-    room.features = JSON.parse(room.features || '{}');
-    room.images = room.images ? JSON.parse(room.images) : [];
+    
+    // Handle features - check if it's already an object or a string
+    if (room.features) {
+      if (typeof room.features === 'string') {
+        try {
+          room.features = JSON.parse(room.features);
+        } catch (e) {
+          room.features = {};
+        }
+      }
+    } else {
+      room.features = {};
+    }
+    
+    // Handle images - check if it's already an array or a string
+    if (room.images) {
+      if (typeof room.images === 'string') {
+        try {
+          room.images = JSON.parse(room.images);
+        } catch (e) {
+          room.images = [];
+        }
+      } else if (!Array.isArray(room.images)) {
+        room.images = [];
+      }
+    } else {
+      room.images = [];
+    }
 
     res.status(201).json(room);
   } catch (error) {
@@ -115,7 +209,7 @@ export const createRoom = async (req, res) => {
 export const updateRoom = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, description, capacity, price_per_night, features, status, images } = req.body;
+    const { title, description, capacity, price_per_night, features, status, images, room_type } = req.body;
 
     const updateFields = [];
     const params = [];
@@ -143,6 +237,10 @@ export const updateRoom = async (req, res) => {
     if (status !== undefined) {
       updateFields.push('status = ?');
       params.push(status);
+    }
+    if (room_type !== undefined) {
+      updateFields.push('room_type = ?');
+      params.push(room_type);
     }
 
     if (updateFields.length > 0) {
@@ -177,8 +275,34 @@ export const updateRoom = async (req, res) => {
     }
 
     const room = updatedRoom[0];
-    room.features = JSON.parse(room.features || '{}');
-    room.images = room.images ? JSON.parse(room.images) : [];
+    
+    // Handle features - check if it's already an object or a string
+    if (room.features) {
+      if (typeof room.features === 'string') {
+        try {
+          room.features = JSON.parse(room.features);
+        } catch (e) {
+          room.features = {};
+        }
+      }
+    } else {
+      room.features = {};
+    }
+    
+    // Handle images - check if it's already an array or a string
+    if (room.images) {
+      if (typeof room.images === 'string') {
+        try {
+          room.images = JSON.parse(room.images);
+        } catch (e) {
+          room.images = [];
+        }
+      } else if (!Array.isArray(room.images)) {
+        room.images = [];
+      }
+    } else {
+      room.images = [];
+    }
 
     res.json(room);
   } catch (error) {

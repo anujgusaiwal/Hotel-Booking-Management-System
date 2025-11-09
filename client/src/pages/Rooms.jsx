@@ -11,7 +11,8 @@ export default function Rooms() {
     minPrice: '',
     maxPrice: '',
     capacity: '',
-    status: 'available'
+    status: 'available',
+    room_type: ''
   });
 
   useEffect(() => {
@@ -26,6 +27,7 @@ export default function Rooms() {
       if (filters.maxPrice) params.maxPrice = filters.maxPrice;
       if (filters.capacity) params.capacity = filters.capacity;
       if (filters.status) params.status = filters.status;
+      if (filters.room_type) params.room_type = filters.room_type;
 
       const response = await api.get('/rooms', { params });
       setRooms(response.data);
@@ -48,7 +50,8 @@ export default function Rooms() {
       minPrice: '',
       maxPrice: '',
       capacity: '',
-      status: 'available'
+      status: 'available',
+      room_type: ''
     });
   };
 
@@ -88,6 +91,28 @@ export default function Rooms() {
               onChange={handleFilterChange}
               placeholder="1"
             />
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Room Type
+              </label>
+              <select
+                name="room_type"
+                value={filters.room_type}
+                onChange={handleFilterChange}
+                className="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              >
+                <option value="">All Types</option>
+                <option value="standard">Standard</option>
+                <option value="deluxe">Deluxe</option>
+                <option value="suite">Suite</option>
+                <option value="executive">Executive</option>
+                <option value="family">Family</option>
+                <option value="economy">Economy</option>
+                <option value="penthouse">Penthouse</option>
+                <option value="presidential">Presidential</option>
+              </select>
+            </div>
 
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -135,9 +160,16 @@ export default function Rooms() {
                     />
                   )}
                   <div className="p-6">
-                    <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">
-                      {room.title}
-                    </h3>
+                    <div className="flex items-center justify-between mb-2">
+                      <h3 className="text-xl font-semibold text-gray-800 dark:text-white">
+                        {room.title}
+                      </h3>
+                      {room.room_type && (
+                        <span className="text-xs font-semibold bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 px-2 py-1 rounded capitalize">
+                          {room.room_type}
+                        </span>
+                      )}
+                    </div>
                     <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">
                       {room.description}
                     </p>

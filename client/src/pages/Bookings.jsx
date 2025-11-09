@@ -1,22 +1,49 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import api from '../utils/api';
 import Button from '../components/Button';
+import useAuthStore from '../store/authStore';
 
 export default function Bookings() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { user } = useAuthStore();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [error, setError] = useState('');
 
   useEffect(() => {
+    // Check if user is logged in
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+    
     fetchBookings();
-  }, []);
+    // Check if we just came from a booking creation
+    if (location.state?.bookingCreated) {
+      setSuccessMessage('Booking created successfully!');
+      setTimeout(() => setSuccessMessage(''), 5000);
+    }
+  }, [location, user, navigate]);
 
   const fetchBookings = async () => {
+    setLoading(true);
+    setError('');
     try {
       const response = await api.get('/bookings');
-      setBookings(response.data);
+      console.log('Bookings response:', response.data);
+      if (Array.isArray(response.data)) {
+        setBookings(response.data);
+      } else {
+        setBookings([]);
+        setError('Invalid response from server');
+      }
     } catch (error) {
       console.error('Error fetching bookings:', error);
+      setError(error.response?.data?.message || 'Failed to load bookings. Please try again.');
+      setBookings([]);
     } finally {
       setLoading(false);
     }
@@ -50,22 +77,49 @@ export default function Bookings() {
     }
   };
 
-  if (loading) {
-    return <div className="text-center py-12">Loading...</div>;
+  // Early return if not logged in (will redirect)
+  if (!user) {
+    return null;
   }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <h1 className="text-3xl font-bold mb-8 text-gray-800 dark:text-white">My Bookings</h1>
 
-      {bookings.length === 0 ? (
+      {loading && (
+        <div className="text-center py-12">
+          <p className="text-gray-600 dark:text-gray-300">Loading bookings...</p>
+        </div>
+      )}
+
+      {successMessage && (
+        <div className="mb-4 p-4 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-200 rounded-md">
+          {successMessage}
+        </div>
+      )}
+
+      {error && (
+        <div className="mb-4 p-4 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-200 rounded-md">
+          {error}
+          <button
+            onClick={fetchBookings}
+            className="ml-4 underline hover:no-underline"
+          >
+            Retry
+          </button>
+        </div>
+      )}
+
+      {!loading && !error && bookings.length === 0 && (
         <div className="text-center py-12">
           <p className="text-gray-600 dark:text-gray-300 mb-4">No bookings found.</p>
           <Link to="/rooms">
             <Button>Browse Rooms</Button>
           </Link>
         </div>
-      ) : (
+      )}
+
+      {!loading && !error && bookings.length > 0 && (
         <div className="space-y-6">
           {bookings.map((booking) => (
             <div
@@ -101,7 +155,7 @@ export default function Bookings() {
                     </p>
                     <p>
                       <span className="font-semibold">Total Amount:</span> $
-                      {booking.total_amount.toFixed(2)}
+                      {Number(booking.total_amount).toFixed(2)}
                     </p>
                     <p>
                       <span className="font-semibold">Status:</span>{' '}

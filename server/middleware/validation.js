@@ -32,6 +32,7 @@ export const loginValidation = [
 
 export const roomValidation = [
   body('title').trim().notEmpty().withMessage('Title is required'),
+  body('room_type').optional().trim().isIn(['standard', 'deluxe', 'suite', 'executive', 'family', 'economy', 'penthouse', 'presidential']).withMessage('Invalid room type'),
   body('description').trim().notEmpty().withMessage('Description is required'),
   body('capacity').isInt({ min: 1 }).withMessage('Capacity must be at least 1'),
   body('price_per_night').isFloat({ min: 0 }).withMessage('Price must be a positive number'),

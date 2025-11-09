@@ -24,8 +24,18 @@ export default function Home() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section 
+        className="relative text-white py-20 min-h-[600px] flex items-center justify-center bg-gradient-to-br from-blue-600 via-blue-700 to-purple-800"
+        style={{
+          backgroundImage: 'url(/hotel-bg.jpg), linear-gradient(135deg, #2563eb 0%, #7c3aed 100%)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      >
+        {/* Overlay for better text readability */}
+        <div className="absolute inset-0 bg-black bg-opacity-40"></div>
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-4">
             Welcome to Our Hotel
           </h1>

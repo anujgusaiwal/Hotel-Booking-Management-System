@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS rooms (
   id INT AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(255) NOT NULL,
+  room_type VARCHAR(50) DEFAULT 'standard',
   description TEXT,
   capacity INT NOT NULL,
   price_per_night DECIMAL(10, 2) NOT NULL,
@@ -69,6 +70,7 @@ CREATE TABLE IF NOT EXISTS reviews (
 
 -- Indexes for better performance
 CREATE INDEX idx_room_status ON rooms(status);
+CREATE INDEX idx_room_type ON rooms(room_type);
 CREATE INDEX idx_booking_dates ON bookings(from_date, to_date);
 CREATE INDEX idx_booking_user ON bookings(user_id);
 CREATE INDEX idx_booking_room ON bookings(room_id);

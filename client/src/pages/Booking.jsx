@@ -34,7 +34,7 @@ export default function Booking() {
     try {
       const response = await api.get(`/rooms/${id}`);
       setRoom(response.data);
-      setFormData(prev => ({ ...prev, guests: Math.min(prev.guests, response.data.capacity) }));
+      setFormData(prev => ({ ...prev, guests: Math.min(prev.guests, Number(response.data.capacity) || 1) }));
     } catch (error) {
       console.error('Error fetching room:', error);
     }
@@ -46,7 +46,7 @@ export default function Booking() {
       const to = new Date(formData.to_date);
       const nights = Math.ceil((to - from) / (1000 * 60 * 60 * 24));
       if (nights > 0) {
-        setTotalAmount(nights * room.price_per_night);
+        setTotalAmount(nights * Number(room.price_per_night) || 0);
       } else {
         setTotalAmount(0);
       }
@@ -64,7 +64,7 @@ export default function Booking() {
       return;
     }
 
-    if (formData.guests > room.capacity) {
+    if (formData.guests > Number(room.capacity)) {
       setError(`Maximum capacity is ${room.capacity} guests`);
       return;
     }
@@ -90,7 +90,8 @@ export default function Booking() {
         guests: parseInt(formData.guests)
       });
 
-      navigate(`/bookings/${response.data.id}`);
+      // Navigate to bookings page to show all bookings with success state
+      navigate('/bookings', { state: { bookingCreated: true } });
     } catch (error) {
       setError(error.response?.data?.message || 'Booking failed. Please try again.');
     } finally {
@@ -151,7 +152,7 @@ export default function Booking() {
               value={formData.guests}
               onChange={(e) => setFormData({ ...formData, guests: parseInt(e.target.value) || 1 })}
               min={1}
-              max={room.capacity}
+              max={Number(room.capacity) || 1}
               required
             />
 

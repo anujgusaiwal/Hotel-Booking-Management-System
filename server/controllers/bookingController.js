@@ -91,10 +91,28 @@ export const getBookings = async (req, res) => {
 
     const [bookings] = await pool.execute(query, params);
 
-    const formattedBookings = bookings.map(booking => ({
-      ...booking,
-      room_image: booking.room_image ? JSON.parse(booking.room_image)[0] : null
-    }));
+    const formattedBookings = bookings.map(booking => {
+      let room_image = null;
+      
+      // Handle room_image - check if it's already an array or a string
+      if (booking.room_image) {
+        if (typeof booking.room_image === 'string') {
+          try {
+            const parsed = JSON.parse(booking.room_image);
+            room_image = Array.isArray(parsed) && parsed.length > 0 ? parsed[0] : null;
+          } catch (e) {
+            room_image = null;
+          }
+        } else if (Array.isArray(booking.room_image) && booking.room_image.length > 0) {
+          room_image = booking.room_image[0];
+        }
+      }
+      
+      return {
+        ...booking,
+        room_image
+      };
+    });
 
     res.json(formattedBookings);
   } catch (error) {
@@ -130,7 +148,21 @@ export const getBookingById = async (req, res) => {
     }
 
     const booking = bookings[0];
-    booking.room_images = booking.room_images ? JSON.parse(booking.room_images) : [];
+    
+    // Handle room_images - check if it's already an array or a string
+    if (booking.room_images) {
+      if (typeof booking.room_images === 'string') {
+        try {
+          booking.room_images = JSON.parse(booking.room_images);
+        } catch (e) {
+          booking.room_images = [];
+        }
+      } else if (!Array.isArray(booking.room_images)) {
+        booking.room_images = [];
+      }
+    } else {
+      booking.room_images = [];
+    }
 
     res.json(booking);
   } catch (error) {
