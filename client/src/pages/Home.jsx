@@ -24,17 +24,24 @@ export default function Home() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold mb-4">
+      <section className="relative flex items-center justify-center h-[70vh] text-white">
+        <img
+          src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1600&q=80"
+          alt="Luxury hotel exterior with pool"
+          className="absolute inset-0 w-full h-full object-cover"
+          loading="eager"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/20" />
+        <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
+          <h1 className="text-4xl md:text-6xl font-bold drop-shadow-lg">
             Welcome to Our Hotel
           </h1>
-          <p className="text-xl md:text-2xl mb-8">
-            Experience luxury and comfort like never before
+          <p className="text-lg md:text-2xl font-medium drop-shadow">
+            Experience luxury and comfort like never before.
           </p>
           <Link
             to="/rooms"
-            className="bg-white text-blue-600 px-8 py-3 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors inline-block"
+            className="inline-flex items-center justify-center rounded-lg bg-white px-8 py-3 text-lg font-semibold text-blue-700 transition hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
           >
             Browse Rooms
           </Link>
