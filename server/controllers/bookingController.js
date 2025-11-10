@@ -73,12 +73,26 @@ export const createBooking = async (req, res) => {
 export const getBookings = async (req, res) => {
   try {
     let query = `
-      SELECT b.*, r.title as room_title, r.price_per_night,
+      SELECT b.*, r.title as room_title, r.room_number, r.price_per_night,
         (SELECT JSON_ARRAYAGG(url) FROM room_images WHERE room_id = r.id LIMIT 1) as room_image
+    `;
+    
+    // Add user information if admin
+    if (req.user.role === 'admin') {
+      query += `, u.full_name as customer_name, u.email as customer_email`;
+    }
+    
+    query += `
       FROM bookings b
       JOIN rooms r ON b.room_id = r.id
-      WHERE 1=1
     `;
+    
+    // Join users table if admin
+    if (req.user.role === 'admin') {
+      query += ` JOIN users u ON b.user_id = u.id`;
+    }
+    
+    query += ` WHERE 1=1`;
     const params = [];
 
     // If not admin, only show user's bookings

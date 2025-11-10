@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useAuthStore from '../store/authStore';
 import Input from '../components/Input';
@@ -6,12 +6,25 @@ import Button from '../components/Button';
 
 export default function Login() {
   const navigate = useNavigate();
-  const { login, loading, error } = useAuthStore();
+  const { login, loading, error, user } = useAuthStore();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
   const [localError, setLocalError] = useState('');
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (user) {
+      if (user.role === 'admin') {
+        navigate('/admin');
+      } else if (user.role === 'staff') {
+        navigate('/staff');
+      } else {
+        navigate('/');
+      }
+    }
+  }, [user, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,7 +37,15 @@ export default function Login() {
 
     const result = await login(formData.email, formData.password);
     if (result.success) {
-      navigate('/');
+      // Redirect based on user role
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (user?.role === 'admin') {
+        navigate('/admin');
+      } else if (user?.role === 'staff') {
+        navigate('/staff');
+      } else {
+        navigate('/');
+      }
     } else {
       setLocalError(result.error);
     }
@@ -59,7 +80,7 @@ export default function Login() {
           </p>
           <div className="mt-4 p-3 bg-white/20 dark:bg-gray-800/50 backdrop-blur-sm rounded-md border border-white/30">
             <p className="text-xs text-white mb-2 text-center">
-              Admin Login:
+              Quick Login:
             </p>
             <div className="flex gap-2">
               <button
@@ -72,7 +93,19 @@ export default function Login() {
                 }}
                 className="flex-1 text-xs px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md transition-colors"
               >
-                Fill Admin Credentials
+                Admin
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setFormData({
+                    email: 'staff@hotel.com',
+                    password: 'staff123'
+                  });
+                }}
+                className="flex-1 text-xs px-3 py-2 bg-green-500 hover:bg-green-600 text-white rounded-md transition-colors"
+              >
+                Staff
               </button>
             </div>
           </div>

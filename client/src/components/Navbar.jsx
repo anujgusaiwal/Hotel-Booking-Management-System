@@ -44,18 +44,42 @@ export default function Navbar() {
               </Link>
               {user && (
                 <>
-                  <Link
-                    to="/bookings"
-                    className="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-gray-100 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-                  >
-                    My Bookings
-                  </Link>
+                  {user.role === 'customer' && (
+                    <>
+                      <Link
+                        to="/bookings"
+                        className="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-gray-100 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                      >
+                        My Bookings
+                      </Link>
+                      <Link
+                        to="/food-menu"
+                        className="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-gray-100 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                      >
+                        Food Menu
+                      </Link>
+                      <Link
+                        to="/my-orders"
+                        className="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-gray-100 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                      >
+                        My Orders
+                      </Link>
+                    </>
+                  )}
                   {user.role === 'admin' && (
                     <Link
                       to="/admin"
                       className="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-gray-100 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
                     >
                       Admin
+                    </Link>
+                  )}
+                  {user.role === 'staff' && (
+                    <Link
+                      to="/staff"
+                      className="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-gray-100 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                    >
+                      Staff Dashboard
                     </Link>
                   )}
                 </>

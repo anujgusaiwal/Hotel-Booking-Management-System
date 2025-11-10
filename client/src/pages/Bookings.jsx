@@ -147,9 +147,16 @@ export default function Bookings() {
                   />
                 )}
                 <div className="md:col-span-2">
-                  <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">
-                    {booking.room_title}
-                  </h3>
+                  <div className="mb-2">
+                    <h3 className="text-xl font-semibold text-gray-800 dark:text-white">
+                      {booking.room_title}
+                    </h3>
+                    {booking.room_number && (
+                      <p className="text-sm font-medium text-blue-600 dark:text-blue-400">
+                        Room #{booking.room_number}
+                      </p>
+                    )}
+                  </div>
                   <div className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
                     <p>
                       <span className="font-semibold">Reference:</span> {booking.reference}

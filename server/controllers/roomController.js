@@ -142,11 +142,15 @@ export const getRoomById = async (req, res) => {
 
 export const createRoom = async (req, res) => {
   try {
-    const { title, description, capacity, price_per_night, features, status, images, room_type } = req.body;
+    const { title, description, capacity, price_per_night, features, status, images, room_type, room_number } = req.body;
+
+    if (!room_number) {
+      return res.status(400).json({ message: 'Room number is required' });
+    }
 
     const [result] = await pool.execute(
-      'INSERT INTO rooms (title, description, capacity, price_per_night, features, status, room_type) VALUES (?, ?, ?, ?, ?, ?, ?)',
-      [title, description, capacity, price_per_night, JSON.stringify(features || {}), status || 'available', room_type || 'standard']
+      'INSERT INTO rooms (title, description, capacity, price_per_night, features, status, room_type, room_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+      [title, description, capacity, price_per_night, JSON.stringify(features || {}), status || 'available', room_type || 'standard', room_number]
     );
 
     // Add images if provided
@@ -209,7 +213,7 @@ export const createRoom = async (req, res) => {
 export const updateRoom = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, description, capacity, price_per_night, features, status, images, room_type } = req.body;
+    const { title, description, capacity, price_per_night, features, status, images, room_type, room_number } = req.body;
 
     const updateFields = [];
     const params = [];
@@ -241,6 +245,10 @@ export const updateRoom = async (req, res) => {
     if (room_type !== undefined) {
       updateFields.push('room_type = ?');
       params.push(room_type);
+    }
+    if (room_number !== undefined) {
+      updateFields.push('room_number = ?');
+      params.push(room_number);
     }
 
     if (updateFields.length > 0) {

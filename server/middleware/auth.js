@@ -43,3 +43,19 @@ export const admin = (req, res, next) => {
   }
 };
 
+export const staff = (req, res, next) => {
+  if (req.user && req.user.role === 'staff') {
+    next();
+  } else {
+    res.status(403).json({ message: 'Access denied. Staff only.' });
+  }
+};
+
+export const adminOrStaff = (req, res, next) => {
+  if (req.user && (req.user.role === 'admin' || req.user.role === 'staff')) {
+    next();
+  } else {
+    res.status(403).json({ message: 'Access denied. Admin or Staff only.' });
+  }
+};
+

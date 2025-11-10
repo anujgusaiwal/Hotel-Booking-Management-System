@@ -173,9 +173,16 @@ export default function Rooms() {
                   )}
                   <div className="p-6">
                     <div className="flex items-center justify-between mb-2">
-                      <h3 className="text-xl font-semibold text-gray-800 dark:text-white">
-                        {room.title}
-                      </h3>
+                      <div>
+                        <h3 className="text-xl font-semibold text-gray-800 dark:text-white">
+                          {room.title}
+                        </h3>
+                        {room.room_number && (
+                          <p className="text-sm font-medium text-blue-600 dark:text-blue-400">
+                            Room #{room.room_number}
+                          </p>
+                        )}
+                      </div>
                       {room.room_type && (
                         <span className="text-xs font-semibold bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 px-2 py-1 rounded capitalize">
                           {room.room_type}

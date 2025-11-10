@@ -61,7 +61,7 @@ export const createUser = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
     
     // Validate role
-    const userRole = role === 'admin' ? 'admin' : 'customer';
+    const userRole = role === 'admin' ? 'admin' : role === 'staff' ? 'staff' : 'customer';
     
     // Create user
     const [result] = await pool.execute(
@@ -138,7 +138,7 @@ export const updateUser = async (req, res) => {
     }
     
     if (role) {
-      const userRole = role === 'admin' ? 'admin' : 'customer';
+      const userRole = role === 'admin' ? 'admin' : role === 'staff' ? 'staff' : 'customer';
       updates.push('role = ?');
       values.push(userRole);
     }

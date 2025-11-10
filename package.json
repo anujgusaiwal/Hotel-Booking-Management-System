@@ -1,4 +1,16 @@
 {
+  "name": "hotel-booking-system",
+  "version": "1.0.0",
+  "description": "Hotel Booking Management System",
+  "scripts": {
+    "build": "cd client && npm install && npm run build",
+    "build:server": "cd server && npm install",
+    "build:all": "npm run build:server && npm run build",
+    "start": "cd server && npm start",
+    "start:prod": "cd server && NODE_ENV=production npm start",
+    "dev:client": "cd client && npm run dev",
+    "dev:server": "cd server && npm run dev"
+  },
   "dependencies": {
     "bcryptjs": "^3.0.3"
   }

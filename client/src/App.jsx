@@ -11,8 +11,11 @@ import Register from './pages/Register';
 import Profile from './pages/Profile';
 import Bookings from './pages/Bookings';
 import AdminDashboard from './pages/AdminDashboard';
+import StaffDashboard from './pages/StaffDashboard';
+import FoodMenu from './pages/FoodMenu';
+import MyOrders from './pages/MyOrders';
 
-function PrivateRoute({ children, adminOnly = false }) {
+function PrivateRoute({ children, adminOnly = false, staffOnly = false }) {
   const { user } = useAuthStore();
   
   if (!user) {
@@ -20,6 +23,10 @@ function PrivateRoute({ children, adminOnly = false }) {
   }
   
   if (adminOnly && user.role !== 'admin') {
+    return <Navigate to="/" />;
+  }
+  
+  if (staffOnly && user.role !== 'staff') {
     return <Navigate to="/" />;
   }
   
@@ -76,6 +83,30 @@ function App() {
             element={
               <PrivateRoute adminOnly={true}>
                 <AdminDashboard />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/staff"
+            element={
+              <PrivateRoute staffOnly={true}>
+                <StaffDashboard />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/food-menu"
+            element={
+              <PrivateRoute>
+                <FoodMenu />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/my-orders"
+            element={
+              <PrivateRoute>
+                <MyOrders />
               </PrivateRoute>
             }
           />
