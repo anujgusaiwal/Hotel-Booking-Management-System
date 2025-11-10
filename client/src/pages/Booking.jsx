@@ -107,12 +107,24 @@ export default function Booking() {
   minDate.setDate(minDate.getDate() + 1);
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <h1 className="text-3xl font-bold mb-8 text-gray-800 dark:text-white">Complete Your Booking</h1>
+    <div 
+      className="min-h-screen relative"
+      style={{
+        backgroundImage: 'url(https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=1920&q=80)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundAttachment: 'fixed'
+      }}
+    >
+      {/* Overlay for better readability */}
+      <div className="absolute inset-0 bg-black bg-opacity-30 dark:bg-opacity-50"></div>
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
+        <h1 className="text-3xl font-bold mb-8 text-white drop-shadow-lg">Complete Your Booking</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Booking Form */}
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-2xl backdrop-blur-sm bg-opacity-95 dark:bg-opacity-95">
           <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">
             {room.title}
           </h2>
@@ -169,7 +181,7 @@ export default function Booking() {
         </div>
 
         {/* Booking Summary */}
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md h-fit">
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-2xl h-fit backdrop-blur-sm bg-opacity-95 dark:bg-opacity-95">
           <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">
             Booking Summary
           </h2>
@@ -229,6 +241,7 @@ export default function Booking() {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

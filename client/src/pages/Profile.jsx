@@ -46,10 +46,22 @@ export default function Profile() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <h1 className="text-3xl font-bold mb-8 text-gray-800 dark:text-white">My Profile</h1>
+    <div 
+      className="min-h-screen relative"
+      style={{
+        backgroundImage: 'url(https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=1920&q=80)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundAttachment: 'fixed'
+      }}
+    >
+      {/* Overlay for better readability */}
+      <div className="absolute inset-0 bg-black bg-opacity-30 dark:bg-opacity-50"></div>
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
+        <h1 className="text-3xl font-bold mb-8 text-white drop-shadow-lg">My Profile</h1>
 
-      <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
+        <div className="bg-white dark:bg-gray-800 shadow-2xl rounded-lg p-6 backdrop-blur-sm bg-opacity-95 dark:bg-opacity-95">
         {!editing ? (
           <>
             <div className="mb-6">
@@ -106,6 +118,7 @@ export default function Profile() {
             </div>
           </form>
         )}
+      </div>
       </div>
     </div>
   );

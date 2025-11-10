@@ -83,8 +83,20 @@ export default function Bookings() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <h1 className="text-3xl font-bold mb-8 text-gray-800 dark:text-white">My Bookings</h1>
+    <div 
+      className="min-h-screen relative"
+      style={{
+        backgroundImage: 'url(https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=1920&q=80)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundAttachment: 'fixed'
+      }}
+    >
+      {/* Overlay for better readability */}
+      <div className="absolute inset-0 bg-black bg-opacity-30 dark:bg-opacity-50"></div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
+        <h1 className="text-3xl font-bold mb-8 text-white drop-shadow-lg">My Bookings</h1>
 
       {loading && (
         <div className="text-center py-12">
@@ -124,7 +136,7 @@ export default function Bookings() {
           {bookings.map((booking) => (
             <div
               key={booking.id}
-              className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6"
+              className="bg-white dark:bg-gray-800 shadow-2xl rounded-lg p-6 backdrop-blur-sm bg-opacity-95 dark:bg-opacity-95"
             >
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {booking.room_image && (
@@ -194,6 +206,7 @@ export default function Bookings() {
           ))}
         </div>
       )}
+      </div>
     </div>
   );
 }

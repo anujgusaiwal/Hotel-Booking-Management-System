@@ -48,13 +48,25 @@ export default function RoomDetails() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <Link
-        to="/rooms"
-        className="text-blue-600 dark:text-blue-400 hover:underline mb-4 inline-block"
-      >
-        ← Back to Rooms
-      </Link>
+    <div 
+      className="min-h-screen relative"
+      style={{
+        backgroundImage: 'url(https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=1920&q=80)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundAttachment: 'fixed'
+      }}
+    >
+      {/* Overlay for better readability */}
+      <div className="absolute inset-0 bg-black bg-opacity-30 dark:bg-opacity-50"></div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
+        <Link
+          to="/rooms"
+          className="text-white hover:text-blue-300 hover:underline mb-4 inline-block drop-shadow-lg"
+        >
+          ← Back to Rooms
+        </Link>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Image Gallery */}
@@ -102,7 +114,7 @@ export default function RoomDetails() {
         </div>
 
         {/* Room Details */}
-        <div>
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-2xl backdrop-blur-sm bg-opacity-95 dark:bg-opacity-95">
           <div className="flex items-center justify-between mb-4">
             <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
               {room.title}
@@ -188,6 +200,7 @@ export default function RoomDetails() {
             </Button>
           )}
         </div>
+      </div>
       </div>
     </div>
   );
