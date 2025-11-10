@@ -37,19 +37,19 @@ export const placeFoodOrder = async (req, res) => {
     const dish = dishes[0];
     const total_price = dish.price * quantity;
 
-    // Check if customer has an active booking for this room
+    // Check if customer has a confirmed booking for this room
+    // Allow orders for bookings that haven't ended yet (to_date >= today)
     const [bookings] = await pool.execute(
       `SELECT id FROM bookings 
        WHERE user_id = ? AND room_id = ? 
        AND status = 'confirmed' 
-       AND from_date <= CURDATE() 
        AND to_date >= CURDATE()`,
       [customer_id, room_id]
     );
 
     if (bookings.length === 0) {
       return res.status(400).json({ 
-        message: 'You must have an active booking for this room to place an order' 
+        message: 'You must have a confirmed booking for this room to place an order. Please ensure your booking is confirmed and has not ended.' 
       });
     }
 
@@ -256,6 +256,10 @@ export const getCustomerActiveBookings = async (req, res) => {
   try {
     const customer_id = req.user.id;
 
+    // Get confirmed bookings that are either:
+    // 1. Currently active (check-in passed, check-out not yet passed)
+    // 2. Starting today or in the future (allow pre-orders)
+    // Exclude cancelled and completed bookings
     const [bookings] = await pool.execute(
       `SELECT b.id, b.room_id, b.from_date, b.to_date,
         r.title as room_title, r.room_number, r.room_type
@@ -263,11 +267,12 @@ export const getCustomerActiveBookings = async (req, res) => {
        JOIN rooms r ON b.room_id = r.id
        WHERE b.user_id = ? 
        AND b.status = 'confirmed' 
-       AND b.from_date <= CURDATE() 
        AND b.to_date >= CURDATE()
        ORDER BY b.from_date DESC`,
       [customer_id]
     );
+
+    console.log(`Found ${bookings.length} active bookings for customer ${customer_id}`);
 
     res.json(bookings);
   } catch (error) {
