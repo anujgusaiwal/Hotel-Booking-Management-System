@@ -173,7 +173,7 @@ export default function Bookings() {
                       <span className="font-semibold">Guests:</span> {booking.guests}
                     </p>
                     <p>
-                      <span className="font-semibold">Total Amount:</span> $
+                      <span className="font-semibold">Total Amount:</span> ₹
                       {Number(booking.total_amount).toFixed(2)}
                     </p>
                     <p>

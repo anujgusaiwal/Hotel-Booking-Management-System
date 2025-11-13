@@ -305,7 +305,7 @@ export const getBookingReceipt = async (req, res) => {
     doc.text(`Check-out: ${new Date(booking.to_date).toLocaleDateString()}`);
     doc.text(`Guests: ${booking.guests}`);
     doc.moveDown();
-    doc.fontSize(16).text(`Total Amount: $${parseFloat(booking.total_amount).toFixed(2)}`, { align: 'right' });
+    doc.fontSize(16).text(`Total Amount: ₹${parseFloat(booking.total_amount).toFixed(2)}`, { align: 'right' });
     doc.text(`Status: ${booking.status.toUpperCase()}`, { align: 'right' });
 
     doc.end();

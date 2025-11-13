@@ -135,7 +135,7 @@ export default function RoomDetails() {
                 Price per night
               </span>
               <span className="text-3xl font-bold text-blue-600 dark:text-blue-400">
-                ${room.price_per_night}
+                ₹{Number(room.price_per_night).toFixed(2)}
               </span>
             </div>
             <div className="space-y-2 text-sm text-gray-600 dark:text-gray-300">

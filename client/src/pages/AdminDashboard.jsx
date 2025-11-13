@@ -434,7 +434,7 @@ export default function AdminDashboard() {
               Total Revenue
             </h3>
             <p className="text-3xl font-bold text-gray-800 dark:text-white">
-              ${Number(analytics.totalRevenue).toFixed(2)}
+              ₹{Number(analytics.totalRevenue).toFixed(2)}
             </p>
           </Card>
           <Card className="p-6">
@@ -496,7 +496,7 @@ export default function AdminDashboard() {
                   </p>
                   <div className="flex justify-between items-center mb-4">
                     <span className="text-lg font-bold text-blue-600 dark:text-blue-400">
-                      ${room.price_per_night}/night
+                      ₹{Number(room.price_per_night).toFixed(2)}/night
                     </span>
                     <span className="text-sm text-gray-500 dark:text-gray-400">
                       Capacity: {room.capacity}
@@ -567,7 +567,7 @@ export default function AdminDashboard() {
                         <span className="font-medium">Guests:</span> {booking.guests}
                       </p>
                       <p className="text-sm text-gray-600 dark:text-gray-300">
-                        <span className="font-medium">Total:</span> ${Number(booking.total_amount).toFixed(2)}
+                        <span className="font-medium">Total:</span> ₹{Number(booking.total_amount).toFixed(2)}
                       </p>
                       <p className="text-sm">
                         <span className="font-medium text-gray-600 dark:text-gray-300">Status:</span>{' '}

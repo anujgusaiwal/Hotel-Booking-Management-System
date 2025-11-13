@@ -82,7 +82,7 @@ export default function Home() {
                     </p>
                     <div className="flex justify-between items-center">
                       <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                        ${room.price_per_night}/night
+                        ₹{Number(room.price_per_night).toFixed(2)}/night
                       </span>
                       <Link
                         to={`/rooms/${room.id}`}

@@ -195,7 +195,7 @@ export default function Booking() {
             <div className="flex justify-between">
               <span className="text-gray-600 dark:text-gray-300">Price per night:</span>
               <span className="font-semibold text-gray-800 dark:text-white">
-                ${room.price_per_night}
+₹{Number(room.price_per_night).toFixed(2)}
               </span>
             </div>
 
@@ -235,7 +235,7 @@ export default function Booking() {
               <div className="flex justify-between text-lg">
                 <span className="font-semibold text-gray-800 dark:text-white">Total:</span>
                 <span className="font-bold text-blue-600 dark:text-blue-400 text-xl">
-                  ${totalAmount.toFixed(2)}
+                  ₹{totalAmount.toFixed(2)}
                 </span>
               </div>
             </div>

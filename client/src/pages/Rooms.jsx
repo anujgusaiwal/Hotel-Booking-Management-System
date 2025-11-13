@@ -197,7 +197,7 @@ export default function Rooms() {
                         Capacity: {room.capacity} guests
                       </span>
                       <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                        ${room.price_per_night}/night
+                        ₹{Number(room.price_per_night).toFixed(2)}/night
                       </span>
                     </div>
                     <div className="flex flex-wrap gap-2">

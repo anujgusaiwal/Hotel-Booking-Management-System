@@ -225,7 +225,7 @@ export default function StaffDashboard() {
                       </div>
                       <div className="text-sm text-gray-500 dark:text-gray-400">
                         <p>Capacity: {room.capacity} guests</p>
-                        <p>Price: ${room.price_per_night}/night</p>
+                        <p>Price: ₹{Number(room.price_per_night).toFixed(2)}/night</p>
                         {room.assigned_at && (
                           <p className="text-xs mt-1">
                             Assigned: {new Date(room.assigned_at).toLocaleDateString()}
@@ -304,7 +304,7 @@ export default function StaffDashboard() {
                             <span className="font-medium">Guests:</span> {booking.guests}
                           </p>
                           <p>
-                            <span className="font-medium">Total Amount:</span> $
+                            <span className="font-medium">Total Amount:</span> ₹
                             {Number(booking.total_amount).toFixed(2)}
                           </p>
                           <p>
