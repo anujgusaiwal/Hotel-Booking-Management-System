@@ -235,7 +235,6 @@ Comprehensive documentation is available in the `docs/` directory:
 - [Database Schema](docs/database_schema.md) - Complete database structure
 - [SQL Queries](docs/queries.md) - Sample queries and operations
 - [Screenshots](docs/screenshots.md) - Application screenshots
-- [Viva Questions](docs/viva_questions.md) - DBMS viva questions and answers
 - [Future Scope](docs/future_scope.md) - Future enhancements
 
 ## 🔐 Security Features
@@ -272,7 +271,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 👥 Authors
 
-- Your Name - *Initial work*
+- Your Name - *Anuj Gusaiwal*
 
 ## 🙏 Acknowledgments
 
